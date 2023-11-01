@@ -1,3 +1,8 @@
-import { Board } from "./Board";
+import { Board } from './Board';
 
-export type { Board };
+interface res<D> {
+  error: string | null;
+  data: D;
+}
+
+export type { res, Board };
