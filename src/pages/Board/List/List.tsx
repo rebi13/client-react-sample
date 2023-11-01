@@ -6,8 +6,9 @@ import axiosRequest from '../../../api/index';
 export default function List() {
   const {
     isLoading,
+    isError,
     error,
-    data: board
+    data: boards
   } = useQuery({
     queryKey: ['boardList'],
     queryFn: () => axiosRequest.requestAxios<res<Board[]>>('get', '/boards')
@@ -17,19 +18,25 @@ export default function List() {
     return <h2>Loading...</h2>;
   }
 
-  if (error) return 'An error has occurred: ' + error;
+  if (isError) return <h2>{'An error has occurred: ' + error}</h2>;
 
-  if (board) {
+  if (boards) {
     return (
-      <h2>
-        {board.data.map((el) => (
-          <div>
-            title: <Link to={`/Detail/${el._id}`}>{el.title}</Link> | content:{' '}
-            {el.content}
-          </div>
-        ))}
-      </h2>
+      <>
+        <h2>
+          {boards.data.map((el) => (
+            <div key={el._id}>
+              title: <Link to={`/Detail/${el._id}`}>{el.title}</Link> | content:{' '}
+              {el.content}
+            </div>
+          ))}
+        </h2>
+        <div>
+          <Link to={'/post'}>글 작성</Link>
+        </div>
+      </>
     );
   }
+
   return <div>No data available</div>; // 데이터가 없는 경우 예외 처리
 }
