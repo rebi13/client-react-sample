@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Board } from '../../../@types';
+import { res, Board } from '../../../@types';
 import useCustomQuery from '../../../hooks/useCustomQuery';
 
 export default function List() {
@@ -8,7 +8,7 @@ export default function List() {
     isLoading,
     isError,
     error
-  } = useCustomQuery<Board[]>(['boardList'], {
+  } = useCustomQuery<res<Board[]>>(['boardList'], {
     method: 'get',
     url: '/boards'
   });
