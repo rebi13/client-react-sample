@@ -1,23 +1,24 @@
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { res, Board } from '../../../@types';
-import axiosRequest from '../../../api/index';
+import { Board } from '../../../@types';
+import useCustomQuery from '../../../hooks/useCustomQuery';
 
 export default function List() {
   const {
+    data: boards,
     isLoading,
     isError,
-    error,
-    data: boards
-  } = useQuery({
-    queryKey: ['boardList'],
-    queryFn: () => axiosRequest.requestAxios<res<Board[]>>('get', '/boards')
+    error
+  } = useCustomQuery<Board[]>(['boardList'], {
+    method: 'get',
+    url: '/boards'
   });
 
+  // Todo: 전역으로 배치하기
   if (isLoading) {
     return <h2>Loading...</h2>;
   }
 
+  // Todo: 전역으로 배치하기
   if (isError) return <h2>{'An error has occurred: ' + error}</h2>;
 
   if (boards) {
