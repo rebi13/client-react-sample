@@ -1,25 +1,26 @@
-import { isError, useQuery } from '@tanstack/react-query';
-import axiosRequest from '../../../api';
-import { Board, res } from '../../../@types';
+import { res, Board } from '../../../@types';
 import { Link, useParams } from 'react-router-dom';
+import useCustomQuery from '../../../hooks/useCustomQuery';
 
 export default function Detail() {
   const { id } = useParams();
 
   const {
+    data: board,
     isLoading,
     isError,
-    error,
-    data: board
-  } = useQuery({
-    queryKey: ['getBoard'],
-    queryFn: () => axiosRequest.requestAxios<res<Board>>('get', `/boards/${id}`)
+    error
+  } = useCustomQuery<res<Board>>(['getBoard'], {
+    method: 'get',
+    url: `/boards/${id}`
   });
 
+  // Todo: 전역으로 배치하기
   if (isLoading) {
     return <h2>Loading...</h2>;
   }
 
+  // Todo: 전역으로 배치하기
   if (isError) return <h2>{'An error has occurred: ' + error}</h2>;
 
   if (board) {
