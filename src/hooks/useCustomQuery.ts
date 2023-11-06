@@ -1,6 +1,5 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axiosRequest from '../api';
-import { res } from '../@types/index';
 
 interface QueryData<T> {
   data: T | undefined;
@@ -24,12 +23,9 @@ interface infoProps {
  * @param info 호출 method와 url 정보를 담은 객체 데이터
  * @returns
  */
-const useCustomQuery = <T>(
-  key: string[],
-  info: infoProps
-): QueryData<res<T>> => {
-  const { data, isLoading, isError, error } = useQuery<res<T>, Error>(key, () =>
-    axiosRequest.requestAxios<res<T>>(info.method, info.url)
+const useCustomQuery = <T>(key: string[], info: infoProps): QueryData<T> => {
+  const { data, isLoading, isError, error } = useQuery<T, Error>(key, () =>
+    axiosRequest.requestAxios<T>(info.method, info.url)
   );
 
   return { data, isLoading, isError, error };
