@@ -1,0 +1,38 @@
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import axiosRequest from '../api';
+import { res } from '../@types/index';
+
+interface QueryData<T> {
+  data: T | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  error: any; // Todo: error-boundary
+}
+
+interface infoProps {
+  method: string;
+  url: string;
+}
+
+/**
+ * 작성자명   : 원종석
+ * 작성일자   : 2023.11.06.(월)
+ * 작성내용   : useQuery 커스텀 훅
+ * 수정일자   : none
+ * 수정내용   : none
+ * @param key 내부적으로 데이터를 캐시하고 쿼리에 대한 종속성이 변경될 때 자동으로 다시 가져올 수 있게 하는 고유한 키 값
+ * @param info 호출 method와 url 정보를 담은 객체 데이터
+ * @returns
+ */
+const useCustomQuery = <T>(
+  key: string[],
+  info: infoProps
+): QueryData<res<T>> => {
+  const { data, isLoading, isError, error } = useQuery<res<T>, Error>(key, () =>
+    axiosRequest.requestAxios<res<T>>(info.method, info.url)
+  );
+
+  return { data, isLoading, isError, error };
+};
+
+export default useCustomQuery;
