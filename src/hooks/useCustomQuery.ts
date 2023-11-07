@@ -11,6 +11,7 @@ interface QueryData<T> {
 interface infoProps {
   method: string;
   url: string;
+  enabled: boolean;
 }
 
 /**
@@ -24,9 +25,11 @@ interface infoProps {
  * @returns
  */
 const useCustomQuery = <T>(key: string[], info: infoProps): QueryData<T> => {
-  const { data, isLoading, isError, error } = useQuery<T, Error>(key, () =>
-    axiosRequest.requestAxios<T>(info.method, info.url)
-  );
+  const { data, isLoading, isError, error } = useQuery<T, Error>({
+    queryKey: key,
+    queryFn: () => axiosRequest.requestAxios<T>(info.method, info.url),
+    enabled: !!info.enabled
+  });
 
   return { data, isLoading, isError, error };
 };
