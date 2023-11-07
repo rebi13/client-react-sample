@@ -10,7 +10,8 @@ export default function List() {
     error
   } = useCustomQuery<res<Board[]>>(['boardList'], {
     method: 'get',
-    url: '/boards'
+    url: '/boards',
+    enabled: true
   });
 
   // Todo: 전역으로 배치하기
